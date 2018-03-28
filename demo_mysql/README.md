@@ -1,1 +1,4 @@
-## 连接数据库，对数据库进行增删改查的操作
+## [首页python](https://github.com/chencong-plan/python)
+
+## demo_mysql
+> python对mysql数据库的各种操作，系列学习
