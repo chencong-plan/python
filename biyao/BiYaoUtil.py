@@ -135,6 +135,7 @@ def insertChirdCateByUrl(url):
             print(params)
             DBUtil.execute(sql, params)
 
+
 # url = "http://www.biyao.com/classify/category.html?categoryId=280"
 urls = ["http://www.biyao.com/classify/category.html?categoryId=295",
         "http://www.biyao.com/classify/category.html?categoryId=289",
@@ -183,6 +184,8 @@ urls = ["http://www.biyao.com/classify/category.html?categoryId=295",
         "http://www.biyao.com/classify/category.html?categoryId=234"]
 for url in urls:
     insertChirdCateByUrl(url)
+
+
 #
 # insertChirdCate(html)
 
