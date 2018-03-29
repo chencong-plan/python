@@ -9,13 +9,38 @@ import uuid
 # 引入DBUtils
 import DBUtil
 
+url = "http://www.biyao.com/home/index.html"
+html = request.urlopen(url).read().decode("utf8")
+
+
+# 由于首页存在瀑布流，在这里将所有文件列举在index.html当中
+# html = open("index.html",encoding='UTF-8').read()
+
+
+# 获得所有分类信息
+def getAllCateList(html):
+    soup = BeautifulSoup(html, "html.parser").find("div", class_="banner")
+    # 获得分类信息，应该从导航栏里面获取
+    lis = soup.find_all("li", class_="nav-main")
+    for li in lis:
+        li_soup = BeautifulSoup(str(li), "html.parser")
+        p_content = li_soup.find_all('p')[0]
+        regex = re.compile('<a href="(.*?)">(.*?)</a>')
+        a = str(p_content).strip().replace("\n", "").replace("\r", "").replace("\t", "")
+        list = re.findall(regex, a)
+        return list
+
 
 # 获得所有分类信息
 def getCateList(html):
-    soup = BeautifulSoup(html)
+    soup = BeautifulSoup(html,"html.parser")
     # 获得分类信息
     categoryList = soup.find_all("div", class_="category-title")
+    print(categoryList)
     return categoryList
+
+
+#getCateList(html)
 
 
 # 获得所有分类标题名称
@@ -46,10 +71,6 @@ def getCateUrlList(categoryList):
     return urls
 
 
-url = "http://www.biyao.com/home/index.html"
-html = request.urlopen(url).read().decode("utf8")
-
-
 def doPreCate(html):
     categoryList = getCateList(html)
     for i, id in enumerate(getCateIdList(categoryList)):
@@ -63,6 +84,7 @@ def doPreCate(html):
 
 # 执行首页获取分类信息
 # doPreCate(html)
+
 
 def getChidCate(url):
     html = request.urlopen(url).read().decode("utf8")
@@ -90,7 +112,10 @@ def doChildCate(html):
         # print(params)
 
 
+# 获得子分类信息
 # doChildCate(html)
+
+
 def doProductByCateId(html):
     categoryList = getCateList(html)
     urls = getCateUrlList(categoryList)
@@ -117,12 +142,13 @@ def insertProduct(url, cate_id):
         for i, img in enumerate(imgs):
             sql = "INSERT INTO product(cate_id,name,price,img_url) VALUES ('%s','%s','%s','%s')"
             price = prices[i];
-            params = (cate_id, names[i], price[price.index("¥")+1:], img)
+            params = (cate_id, names[i], price[price.index("¥") + 1:], img)
             print(params)
+            DBUtil.execute(sql, params)
         # print(len(img), img)
         # print(len(name), name)
         # print(len(price), price)
         # print("======================================================")
 
-
-doProductByCateId(html)
+# 按照分类下载商品信息入库
+# doProductByCateId(html)
