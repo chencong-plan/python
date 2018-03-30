@@ -5,13 +5,13 @@ import uuid
 import re
 
 import uuid
-import DBUtils
+import DBUtil
 
 
 def insertProduct():
     sql = "SELECT * FROM category c WHERE c.pre_id IN (SELECT cate_id FROM category WHERE pre_id = 0)"
     params = ()
-    cursor = DBUtils.select(sql, params)
+    cursor = DBUtil.select(sql, params)
     for row in cursor.fetchall():
         url = row[4]
         cate_id = row[1]
@@ -31,7 +31,7 @@ def insertProduct():
                 price = prices[i]
                 params = (cate_id, names[i], price[price.index("¥") + 1:], img)
                 print(params)
-                DBUtils.execute(sql, params)
+                DBUtil.execute(sql, params)
 
 
 # insertProduct()
@@ -41,7 +41,7 @@ def insertProduct():
 def download_image():
     sql = "SELECT * FROM product"
     params = ()
-    cursor = DBUtils.select(sql, params)
+    cursor = DBUtil.select(sql, params)
     for row in cursor.fetchall():
         url = str(row[4])
         # url = "http://bfs.biyao.com/group1/M00/30/2A/rBACVFq1-IGAEnGgAABx9dK4CuM199.jpg"
@@ -52,9 +52,9 @@ def download_image():
         sql = "UPDATE product SET img_name = '%s' WHERE id = '%s'"
         new_name = img_name + extar_name
         params = (new_name, row[0])
-        imageLocation = "E:/python_work/biyao_product_img/" + new_name  # 图片保存的地址，这里uuid.jpg
+        imageLocation = "D:/img/" + new_name  # 图片保存的地址，这里uuid.jpg
         urlretrieve(url, imageLocation)  # 下载图片
-        DBUtils.execute(sql, params)
+        DBUtil.execute(sql, params)
         print(new_name)
 
 

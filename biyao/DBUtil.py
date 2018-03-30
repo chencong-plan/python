@@ -17,3 +17,9 @@ cursor = connect.cursor()
 def execute(sql, params):
     cursor.execute(sql % params)
     connect.commit()
+
+
+def select(sql, params):
+    cursor.execute(sql % params)
+    connect.commit()
+    return cursor
