@@ -9,7 +9,7 @@ import DBUtils
 
 
 def insertProduct():
-    sql = "select * from category c where c.pre_id in (select cate_id from category where pre_id = 0)"
+    sql = "SELECT * FROM category c WHERE c.pre_id IN (SELECT cate_id FROM category WHERE pre_id = 0)"
     params = ()
     cursor = DBUtils.select(sql, params)
     for row in cursor.fetchall():
@@ -32,12 +32,14 @@ def insertProduct():
                 params = (cate_id, names[i], price[price.index("¥") + 1:], img)
                 print(params)
                 DBUtils.execute(sql, params)
+
+
 # insertProduct()
 # 从上面插入到库当中的商品数据，重新更新库，对商品图片进行下载
 
 
 def download_image():
-    sql = "select * from product"
+    sql = "SELECT * FROM product"
     params = ()
     cursor = DBUtils.select(sql, params)
     for row in cursor.fetchall():
@@ -47,12 +49,12 @@ def download_image():
         extar_name = url_new[url_new.index("."):]
         img_name = str(uuid.uuid1())
         img_name = img_name.replace("-", "")
-        sql = "update product set img_name = '%s' where id = '%s'"
-        new_name = img_name+extar_name
-        params = (new_name,row[0])
-        imageLocation="E:/python_work/biyao_product_img/"+new_name     # 图片保存的地址，这里uuid.jpg 
-        urlretrieve(url,imageLocation)     # 下载图片   
-        DBUtils.execute(sql,params)
+        sql = "UPDATE product SET img_name = '%s' WHERE id = '%s'"
+        new_name = img_name + extar_name
+        params = (new_name, row[0])
+        imageLocation = "E:/python_work/biyao_product_img/" + new_name  # 图片保存的地址，这里uuid.jpg
+        urlretrieve(url, imageLocation)  # 下载图片
+        DBUtils.execute(sql, params)
         print(new_name)
 
 
