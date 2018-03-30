@@ -86,7 +86,7 @@ def getAllChirdCate(html):
 # 通过url获得分类
 def getAllChirdCateByUrl(url):
     result = []
-    content = request.urlopen(url).read().decode("utf8")
+    content = request.urlopyen(url).read().decode("utf8")
     soup = BeautifulSoup(content, "html.parser")
     #  categoryList = soup.find_all("div",class_="category-title")
     category_list = soup.find_all("div", class_="cateBread")
